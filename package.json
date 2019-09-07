@@ -8,8 +8,13 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "babel-loader": "^7.1.5",
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "css-loader": "^3.2.0",
+    "stylus-loader": "^3.0.2",
+    "url-loader": "^2.1.0",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.10.0",
