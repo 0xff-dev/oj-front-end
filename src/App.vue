@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <Header></Header>
+    <div class="app-container">
+      <transition name="fade"><router-view></router-view></transition>
+    </div>
   </div>
 </template>
 
@@ -22,5 +25,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.app-container {
+  margin: 100px 50px 20px 50px;
+  border: solid 1px red;
+  background-color: white;
+  height: 100%;
 }
 </style>
