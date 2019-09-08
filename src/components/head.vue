@@ -1,5 +1,5 @@
 <template>
-    <div class="header padding">
+   <div class="header padding">
         <div class="nav-header">
             <p class="header-title">Online Judge</p>
             <button class="toggle" @click="show = !show">
@@ -11,10 +11,12 @@
         <transition name="fade">
             <div class="ops-part" v-if="show">
                 <ul class="items-part">
-                    <li v-for="item in items" :key="item">
-                        <img :src="item.src">
-                        <span>{{item.name}}</span>
-                    </li>
+                  <li v-for="(item, index) in items" :key="index" :class="index==activeIndex?'active':''" @click="changeTab(index)">
+                    <router-link to="/problems">
+                      <img :src="item.src">
+                      <span>{{item.name}}</span>
+                    </router-link>
+                  </li>
                 </ul>
                 <div class="buttons">
                     <button >Login</button>
@@ -28,7 +30,7 @@
 <script>
 
 export default {
-    data() {
+    data: function() {
         return {
             items: [{
                 id: 1,
@@ -55,7 +57,8 @@ export default {
                 name: 'About',
                 src:''
             }],
-            show: document.body.clientWidth > 1060
+            show: document.body.clientWidth > 1060,
+            activeIndex: 0
         }
     },
     created: function() {
@@ -64,10 +67,15 @@ export default {
         });
         this.show = document.body.clientWidth >= 1060
     },
-    mounted () {
+    mounted() {
         const that = this;
         window.onresize = () => {
             that.show = document.body.clientWidth >= 1060
+        }
+    },
+    methods: {
+        changeTab: function(index) {
+            this.activeIndex = index
         }
     }
 }
@@ -140,9 +148,11 @@ export default {
 }
 .items-part li {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    margin-left: 30px;
+    width: 15%;
+    text-align: center;
+    height: 55px;
 }
 .items-part img {
     width: 15px;
@@ -167,6 +177,11 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.active {
+    border-bottom: solid 1px rgb(73, 140, 233);
+    border-bottom-width: 5px;
 }
 
 /* 屏幕足够不需要进行适配 */
@@ -209,6 +224,8 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        z-index: 100;
+        overflow: scroll;
     }
     .items-part {
         display: flex;
@@ -219,7 +236,7 @@ export default {
     }
     .items-part li {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         margin-bottom: 14px;
         text-align: start;
     }
