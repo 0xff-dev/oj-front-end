@@ -1,32 +1,8 @@
 # oj-front-end
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 了解知识(不做前端远古人)
+1. element-ui
+2. iview
 
 ## 实现难点
 1. 用户登录信息
@@ -37,3 +13,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 > 初始化组件需要的参数还未添加
 > 对item的点击事件还没添加
 
+3. 在状态，问题列表部分，有有的头部， 首页和
