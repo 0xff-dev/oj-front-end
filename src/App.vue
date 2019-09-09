@@ -25,12 +25,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 85%;
+  margin-bottom: 30px;
 }
 
 .app-container {
   margin: 100px 50px 20px 50px;
-  border: solid 1px red;
+  border: none !important;
   background-color: white;
   height: 100%;
+  max-height: 75%;
 }
 </style>
