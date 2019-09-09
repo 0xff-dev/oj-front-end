@@ -149,6 +149,7 @@ img {
     margin-top: 30px;
     z-index: 200;
     box-shadow: 0px 0px 3px rgb(133, 129, 129);
+    background-color: white;
 }
 .sub-menu p {
     padding: 0 8px;
