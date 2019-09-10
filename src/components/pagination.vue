@@ -9,19 +9,20 @@
             </span>
         </div>
         <div v-if="total >= 5">
-            <span class="defautl-span span-border" v-if="nowIndex!=1"><img :src="left"></span>
+            <span class="defautl-span span-border" v-if="nowIndex!=1" @click="prePage"><img :src="left"></span>
             <span v-for="index in pages" 
                 :key="index" 
                 :class="index==nowIndex?'default-span span-border-color activePage':'default-span span-border-color '"
                 @click="selectPage(index)">
                     {{index}}
             </span>
-            <span class="defautl-span span-border" v-if="nowIndex!=total"><img :src="right"></span>
+            <span class="defautl-span span-border" v-if="nowIndex!=total" @click="nextPage"><img :src="right"></span>
         </div>
     </div> 
 </template>
 
 <script>
+
 export default {
     props: {
         total: {
@@ -45,6 +46,14 @@ export default {
                 while(start<=end) yield start++;
             }(that.nowIndex==that.total||that.nowIndex==that.total-1||that.nowIndex==that.total-2?that.total-4:that.nowIndex-2>0?that.nowIndex-2:1, 
                 that.nowIndex==1||that.nowIndex==2||that.nowIndex==3?5:that.nowIndex+2<=that.total?that.nowIndex+2:that.total))
+        },
+        prePage: function() {
+            this.nowIndex--
+            this.selectPage(this.nowIndex)
+        },
+        nextPage: function() {
+            this.nowIndex++
+            this.selectPage(this.nowIndex)
         }
     }
 }
