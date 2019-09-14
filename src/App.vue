@@ -33,7 +33,7 @@ export default {
   margin: 100px 50px 20px 50px;
   border: none !important;
   background-color: white;
-  height: 100%;
+  height: auto;
   max-height: 75%;
 }
 </style>
