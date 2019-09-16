@@ -9,7 +9,6 @@
 
 <script>
 import Header from './components/head.vue'
-
 export default {
   name: 'app',
   components: {
