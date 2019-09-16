@@ -66,12 +66,10 @@ export default {
             })
         },
         prePage: function() {
-            this.nowIndex--
-            this.selectPage(this.nowIndex)
+            this.selectPage(--this.nowIndex)
         },
         nextPage: function() {
-            this.nowIndex++
-            this.selectPage(this.nowIndex)
+            this.selectPage(++this.nowIndex)
         }
     }
 }
