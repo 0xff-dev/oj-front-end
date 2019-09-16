@@ -12,9 +12,9 @@
             <div class="ops-part" v-if="show">
                 <ul class="items-part">
                   <li v-for="(item, index) in items" :key="index" :class="index==activeIndex?'active':''" @click="changeTab(index)">
-                    <router-link to="/problems">
-                      <img :src="item.src">
-                      <span>{{item.name}}</span>
+                    <router-link :to="item.path" tag="span" class="router-link-span">
+                        <img :src="item.src">
+                        <span>{{item.name}}</span>
                     </router-link>
                   </li>
                 </ul>
@@ -22,6 +22,10 @@
                     <button >Login</button>
                     <button >Register</button>    
                 </div>
+                <!--测试用户登录后的显示结果, 名字很长的情况-->
+                <!-- <div class="buttons">
+                    <button class="user-login">stevenshuangcocordsdsdsdgggghghg</button>
+                </div> -->
             </div>
         </transition>
     </div>
@@ -35,30 +39,36 @@ export default {
             items: [{
                 id: 1,
                 name: 'Home',
-                src:''
+                src:'',
+                path: "/home"
             },{
                 id: 2,
                 name: 'Problems',
-                src:''
+                src:'',
+                path: "/problems"
             },{
                 id: 3,
                 name: 'Status',
-                src:''
+                src:'',
+                path: "/status"
             },{
                 id: 4,
                 name: 'Contests',
-                src:''
+                src:'',
+                path: "/contests"
             },{
                 id: 5,
                 name: 'Rank',
-                src:''
+                src:'',
+                path: "/rank"
             },{
                 id: 6,
                 name: 'About',
-                src:''
+                src:'',
+                path: "/about"
             }],
             show: document.body.clientWidth > 1060,
-            activeIndex: 0
+            activeIndex: 0 // 应该需要vuex了，不能再等了
         }
     },
     created: function() {
@@ -75,6 +85,9 @@ export default {
     },
     methods: {
         changeTab: function(index) {
+            if(document.body.clientWidth < 1060) {
+                this.show = !this.show
+            }
             this.activeIndex = index
         }
     }
@@ -93,6 +106,14 @@ export default {
     font-family: 'Operator Mono';
     background-color: #FDFDFD;
     box-shadow: 0px 3px 5px gray;
+}
+
+.router-link-span {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .padding {
@@ -153,6 +174,7 @@ export default {
     width: 15%;
     text-align: center;
     height: 55px;
+    cursor: pointer;
 }
 .items-part img {
     width: 15px;
@@ -184,6 +206,9 @@ export default {
     border-bottom-width: 5px;
 }
 
+.user-login {
+    width: auto !important;
+}
 /* 屏幕足够不需要进行适配 */
 @media (min-width: 1060px) {
     .toggle {
@@ -236,7 +261,7 @@ export default {
     }
     .items-part li {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         margin-bottom: 14px;
         text-align: start;
     }
@@ -250,6 +275,10 @@ export default {
         width: 300px;
         margin-left: 65px;
         margin-bottom: 20px;
+    }
+    .user-login {
+        margin-left: -25px;
+        width: auto !important;
     }
 }
 </style>
