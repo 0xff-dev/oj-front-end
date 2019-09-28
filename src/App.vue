@@ -1,18 +1,25 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <Header :whichBtn.sync="whichBtn"></Header>
+    <LoginRePannel :show.sync="whichBtn" v-if="whichBtn != 0"></LoginRePannel>
     <div class="app-container">
-      <transition name="fade"><router-view></router-view></transition>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
 import Header from './components/head.vue'
+import LoginRePannel from './components/views/login_register.vue'
 export default {
   name: 'app',
   components: {
-      Header,
+      Header,LoginRePannel
+  },
+  data: function() {
+    return {
+      whichBtn: 0
+    }
   }
 }
 </script>

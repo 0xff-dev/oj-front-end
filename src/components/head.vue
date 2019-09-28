@@ -19,8 +19,8 @@
                   </li>
                 </ul>
                 <div class="buttons">
-                    <button >Login</button>
-                    <button >Register</button>    
+                    <button @click="login">Login</button>
+                    <button @click="register">Register</button>    
                 </div>
                 <!--测试用户登录后的显示结果, 名字很长的情况-->
                 <!-- <div class="buttons">
@@ -68,7 +68,13 @@ export default {
                 path: "/about"
             }],
             show: document.body.clientWidth > 1060,
-            activeIndex: 0 // 应该需要vuex了，不能再等了
+            activeIndex: 0, // 应该需要vuex了，不能再等了
+        }
+    },
+    props: {
+        whichBtn: {
+            type:Number,
+            required: true
         }
     },
     created: function() {
@@ -89,6 +95,12 @@ export default {
                 this.show = !this.show
             }
             this.activeIndex = index
+        },
+        login: function() {
+            this.$emit('update:whichBtn', 1)
+        },
+        register: function() {
+            this.$emit('update:whichBtn', 2)
         }
     }
 }
