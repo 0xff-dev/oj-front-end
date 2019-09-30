@@ -20,7 +20,7 @@
                 </ul>
                 <div class="buttons">
                     <button @click="login">Login</button>
-                    <button @click="register">Register</button>    
+                    <button @click="register">Register</button>
                 </div>
                 <!--测试用户登录后的显示结果, 名字很长的情况-->
                 <!-- <div class="buttons">
@@ -68,13 +68,7 @@ export default {
                 path: "/about"
             }],
             show: document.body.clientWidth > 1060,
-            activeIndex: 0, // 应该需要vuex了，不能再等了
-        }
-    },
-    props: {
-        whichBtn: {
-            type:Number,
-            required: true
+            //activeIndex: 0, // 应该需要vuex了，不能再等了
         }
     },
     created: function() {
@@ -89,18 +83,29 @@ export default {
             that.show = document.body.clientWidth >= 1060
         }
     },
+    computed: {
+        activeIndex() {
+            return this.$store.state.tabIndex
+        }
+    },
     methods: {
         changeTab: function(index) {
+            this.$store.commit('setTabIndex', index)
             if(document.body.clientWidth < 1060) {
                 this.show = !this.show
             }
-            this.activeIndex = index
         },
         login: function() {
-            this.$emit('update:whichBtn', 1)
+            this.$store.commit('setPanelStatus', 1)
+            if(document.body.clientWidth < 1060) {
+                this.show = !this.show
+            }
         },
         register: function() {
-            this.$emit('update:whichBtn', 2)
+            this.$store.commit('setPanelStatus', 2)
+            if(document.body.clientWidth < 1060) {
+                this.show = !this.show
+            }
         }
     }
 }

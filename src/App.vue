@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Header :whichBtn.sync="whichBtn"></Header>
-    <LoginRePannel :show.sync="whichBtn" v-if="whichBtn != 0"></LoginRePannel>
+    <Header ></Header>
+    <LoginRePanel v-if="whichBtn != 0"></LoginRePanel>
     <div class="app-container">
       <router-view></router-view>
     </div>
@@ -10,15 +10,16 @@
 
 <script>
 import Header from './components/head.vue'
-import LoginRePannel from './components/views/login_register.vue'
+import LoginRePanel from './components/views/login_register.vue'
+
 export default {
   name: 'app',
   components: {
-      Header,LoginRePannel
+      Header,LoginRePanel
   },
-  data: function() {
-    return {
-      whichBtn: 0
+  computed: {
+    whichBtn() {
+      return this.$store.state.panelStatus
     }
   }
 }
