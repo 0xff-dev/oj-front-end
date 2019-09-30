@@ -12,12 +12,16 @@ Vue.use(VueRouter)
 const routes = [
     {path: '/', redirect:'home'},
     {path: '/home', component: Home},
+
+    // problem
     {path: '/problems', component: Problems},
+    {path: '/problem/:id/detail', name: 'problem detail'},
     {path: '/status', component: Status},
-    {path: '/about', component: About}
+    {path: '/about', component: About},
   ]
 const router = new VueRouter({
-    routes
+    routes,
+    mode:'history'
 })
 
 export default router
