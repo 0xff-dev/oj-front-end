@@ -2,18 +2,25 @@
     <div class="login-register-pannel">
         <div class="panel-container">
             <div class="panel-head">
-                <span class="panel-head-title">Welcome to OJ</span>
+                <span class="panel-head-title" v-if="whichPanel!=3" >Welcome to OJ</span>
+                <span class="panel-head-title" v-if="whichPanel==3" >Lost Password</span>
                 <span @click="closePanel"><img class="login-register-icon" :src="closeIcon" ></span>
             </div>
             <div class="panel-content">
-                <div class="panel-item">
-                    <span class="icon-span"><img class="login-register-icon" :src="userIcon"></span>
-                    <input class="input-span" type="text" placeholder="Username">
+                <div class="panel-item-container" v-if="whichPanel!=3">
+                    <div class="panel-item">
+                        <span class="icon-span"><img class="login-register-icon" :src="userIcon"></span>
+                        <input class="input-span" type="text" placeholder="Username">
+                    </div>
+                    <span class="tip-span" v-show="whichPanel!=3">*dfdfd</span>
                 </div>
                 <div class="login-items" v-if="whichPanel==1">
-                    <div class="panel-item">
-                        <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
-                        <input class="input-span" type="password" placeholder="Password">
+                    <div class="panel-item-container">
+                        <div class="panel-item">
+                            <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
+                            <input class="input-span" type="password" placeholder="Password">
+                        </div>
+                        <span class="tip-span">*dfdfd</span>
                     </div>
                     <div class="login-footer">
                         <button @click="login">Login</button>
@@ -24,21 +31,45 @@
                     </div>
                 </div>
                 <div class="register-items" v-if="whichPanel==2">
-                    <div class="panel-item">
-                        <span class="icon-span"><img class="login-register-icon" :src="emailIcon"></span>
-                        <input class="input-span" type="password" placeholder="Email">
+                    <div class="panel-item-container">
+                        <div class="panel-item">
+                            <span class="icon-span"><img class="login-register-icon" :src="emailIcon"></span>
+                            <input class="input-span" type="text" placeholder="Email">
+                        </div>
+                        <span class="tip-span" v-show="whichPanel!=2">*dfdfd</span>
                     </div>
-                    <div class="panel-item">
-                        <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
-                        <input class="input-span" type="password" placeholder="Password">
+                    <div class="panel-item-container">
+                        <div class="panel-item">
+                            <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
+                            <input class="input-span" type="password" placeholder="Password">
+                        </div>
+                        <span class="tip-span">*dfdfd</span>
                     </div>
-                    <div class="panel-item">
-                        <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
-                        <input class="input-span" type="password" placeholder="RePassword">
+
+                    <div class="panel-item-container">
+                        <div class="panel-item">
+                            <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
+                            <input class="input-span" type="password" placeholder="RePassword">
+                        </div>
+                        <span class="tip-span">*dfdfd</span>
                     </div>
                     <div class="register-footer">
                         <button @click="register">Register</button>
                         <button @click="toLogin">Already registered? Login now</button>
+                    </div>
+                </div>
+                <div class="register-items" v-if="whichPanel==3">
+                    <div class="panel-item-container">
+                        <div class="panel-item">
+                            <span class="icon-span"><img class="login-register-icon" :src="emailIcon"></span>
+                            <!--  增加正则的验证 -->
+                            <input class="input-span" type="text" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="register-footer">
+                        <!-- 检查邮箱是否选在的接口 -->
+                        <button @click="register">submit to send email</button>
+                        <button @click="toLogin">Get your password? Login now</button>
                     </div>
                 </div>
             </div>
@@ -54,30 +85,57 @@ export default {
             emailIcon: require(`../../assets/images/mail.png`),
             lockIcon: require(`../../assets/images/lock.png`),
             closeIcon: require(`../../assets/images/close-circle.png`),
+            //  添加用户名，邮箱，密码的验证, 验证主要是对注册部分，以及忘记密码部分
+            username: "",
+            email:"",
+            password:"",
+            rePassword:"",
         }
     },
     computed: {
         whichPanel() {
             return this.$store.state.panelStatus
+        },
+        verificationUserName(){
+            return false
+        },
+        verificationEmail(){
+            return true
+        },
+        verificationPassword(){
+            return false
+        },
+        verificationRePassword(){
+            return true
         }
     },
     methods: {
-        login: function() {
+        resetData(){
+            this.username = ""
+            this.email = ""
+            this.password = ""
+            this.rePassword = ""
+        },
+        login: function () {
             alert("login success");
         },
-        toRegister: function() {
+        toRegister: function () {
+            this.resetData()
             this.$store.commit('setPanelStatus', 2)
         },
-        toLogin: function() {
+        toLogin: function () {
+            this.resetData()
             this.$store.commit('setPanelStatus', 1)
         },
-        register: function() {
+        register: function () {
 
         },
-        forgetPwd: function() {
+        forgetPwd: function () {
+            this.resetData()
+            this.$store.commit('setPanelStatus', 3)
             alert("forget password")
         },
-        closePanel: function() {
+        closePanel: function () {
             this.$store.commit('setPanelStatus', 0)
         }
     }
@@ -125,11 +183,16 @@ export default {
     padding: 20px;
 }
 
+.panel-item-container {
+    height: 50px;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: start;
+}
 .panel-item {
     height: 35px;
     display: flex;
     border-radius: 10px;
-    margin-bottom: 20px;
 }
 
 .icon-span {
@@ -194,5 +257,9 @@ button:hover {
 .register-footer button:last-child:hover {
     border: 1px solid rgb(123,165,237);
     color: rgb(123,165,237);
+}
+.tip-span {
+    margin-left:10px;
+    color:red
 }
 </style>
