@@ -2,7 +2,8 @@ import {
     Problems,
     Status,
     Home,
-    About
+    About,
+    Contests
   } from '../../components/views'
 import Vue from 'vue'
 import VueRouter from 'vue-router';
@@ -18,6 +19,7 @@ const routes = [
     {path: '/problem/:id/detail', name: 'problem detail'},
     {path: '/status', component: Status},
     {path: '/about', component: About},
+    {path: '/contests', component: Contests},
   ]
 const router = new VueRouter({
     routes,
