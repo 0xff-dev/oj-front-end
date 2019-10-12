@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         tabIndex: 0,
-        panelStatus: 0 // 0不显示，1显示login，2显示register
+        panelStatus: 0, // 0不显示，1显示login，2显示register
     },
     mutations: {
         // 对于head的跳转

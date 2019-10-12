@@ -123,6 +123,7 @@ export default {
     font-family: 'Operator Mono';
     background-color: #FDFDFD;
     box-shadow: 0px 3px 5px gray;
+    z-index: 999;
 }
 
 .router-link-span {
@@ -210,14 +211,6 @@ export default {
     margin-left: 30px;
 }
 
-/* 菜单栏过度动画 */
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
 .active {
     border-bottom: solid 1px rgb(73, 140, 233);
     border-bottom-width: 5px;
@@ -267,7 +260,7 @@ export default {
         flex-direction: column;
         align-items: flex-start;
         z-index: 100;
-        overflow: scroll;
+        overflow-y: scroll;
     }
     .items-part {
         display: flex;
@@ -276,13 +269,20 @@ export default {
         width: 100%;
         list-style-type: none;
     }
-    .items-part li {
+    /* .items-part li {
         display: flex;
         justify-content: flex-start;
         margin-bottom: 14px;
         text-align: start;
+    } */
+    .router-link-span {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 14px;
+        align-items: center;
     }
-
     .nav-header {
         vertical-align: middle;
     }
@@ -290,7 +290,7 @@ export default {
     .buttons {
         text-align: start;
         width: 300px;
-        margin-left: 65px;
+        margin-left: 35px;
         margin-bottom: 20px;
     }
     .user-login {
@@ -298,4 +298,10 @@ export default {
         width: auto !important;
     }
 }
+</style>
+
+<style>
+    .markdown-body {
+        z-index: 10 !important;
+    }
 </style>

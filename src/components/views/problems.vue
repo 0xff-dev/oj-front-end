@@ -3,7 +3,7 @@
         <TableHead
             title="Problmes List"
             :refresh=true
-            optionsName="Tags" 
+            optionsName="Tags"
             cpType="search"></TableHead>
         <div class="problem-list">
             <div class="header">
@@ -17,8 +17,8 @@
             </div>
             <div v-for="(item,index) in datas" :key="item.id" :class="index%2==0?'header white-back':'header'" >
                 <span><img :src="item.is_ac?rightPng:wrongPng" class="ac-img"></span>
-                <span>{{item.id}}</span>
-                <span>{{item.title}}</span>
+                <router-link :to="{name:'problem_detail', params:{id:item.id}}" tag="span" class="router-link-span">{{item.id}}</router-link>
+                <router-link :to="{name:'problem_detail', params:{id:item.id}}" tag="span" class="router-link-span">{{item.title}}</router-link>
                 <span>{{item.commit_cnt}}</span>
                 <span>{{item.ac_rate}}</span>
                 <span>{{item.tags}}</span>
@@ -44,6 +44,9 @@ export default {
             wrongPng: require(`../../assets/images/wrong.png`),
             constUrl: "http://localhost:8888/problems"
         }
+    },
+    created() {
+        this.$store.commit('setTabIndex', 1)
     }
 }
 </script>
@@ -77,6 +80,9 @@ export default {
 }
 .header span:last-child {
     width: 30%;
+}
+.router-link-span{
+    cursor: pointer;
 }
 
 </style>

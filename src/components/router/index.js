@@ -1,5 +1,6 @@
 import {
     Problems,
+    ProblemDetail,
     Status,
     Home,
     About,
@@ -16,7 +17,7 @@ const routes = [
 
     // problem
     {path: '/problems', component: Problems},
-    {path: '/problem/:id/detail', name: 'problem detail'},
+    {path: '/problem/:id/detail', name: 'problem_detail', component: ProblemDetail},
     {path: '/status', component: Status},
     {path: '/about', component: About},
     {path: '/contests', component: Contests},

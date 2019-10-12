@@ -3,7 +3,7 @@
         <TableHead
             title="Status"
             :refresh=true
-            optionsName="Status" 
+            optionsName="Status"
             cpType="status"></TableHead>
         <div>
             <div class="header">
@@ -52,6 +52,9 @@ export default {
                 "Time Limited Error": "green"
             }
         }
+    },
+    created() {
+        this.$store.commit('setTabIndex', 2)
     }
 }
 </script>
