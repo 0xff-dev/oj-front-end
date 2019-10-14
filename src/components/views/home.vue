@@ -1,15 +1,19 @@
 <template>
     <div>
-        <h1>Online Judge</h1>
+        <AddProblem></AddProblem>
     </div>
 </template>
 
 <script>
 
+import AddProblem from './add_problem.vue'
 
 export default {
     created: function() {
         this.$store.commit('setTabIndex', 0)
+    },
+    components:{
+        AddProblem
     }
 }
 </script>
