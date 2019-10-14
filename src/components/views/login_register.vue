@@ -151,7 +151,7 @@ export default {
     right: 0;
     min-width: 1000px;
     background-color: rgba(128, 128, 128, 0.7);
-    z-index: 150;
+    z-index: 300;
     display: flex;
     justify-content: center;
     align-items: flex-start
