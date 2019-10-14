@@ -161,18 +161,21 @@ import 'codemirror/addon/selection/active-line.js'
 }
 
 /* image inverse css*/
-.img-normal {
-    transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    transition: transform .5s;
-    width: 12px;
-    height: 12px;
-}
-.img-inverse {
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-    transition: transform .5s;
-    width: 12px;
-    height: 12px;
-}
+</style>
+
+<style>
+    .img-normal {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transition: transform .5s;
+        width: 12px;
+        height: 12px;
+    }
+    .img-inverse {
+        transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        transition: transform .5s;
+        width: 12px;
+        height: 12px;
+    }
 </style>

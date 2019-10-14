@@ -123,7 +123,7 @@ export default {
     font-family: 'Operator Mono';
     background-color: #FDFDFD;
     box-shadow: 0px 3px 5px gray;
-    z-index: 999;
+    z-index: 200;
 }
 
 .router-link-span {
