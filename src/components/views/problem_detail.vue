@@ -4,15 +4,13 @@
         <div class="problem-info-left">
             <div class="problem-content">
                 <mavon-editor
-                    defaultOpen="preview"
-                    :subfield="false"
-                    :preview="false"
-                    :toolbars="toolbars"
-                    :toolbarsFlag="false"
-                    ref="md"
-                    v-model="mavonData"
+                    ref=md
+                    :defaultOpen=disMode
+                    :subfield=false
+                    :toolbars=toolbars
+                    :toolbarsFlag=canShow
+                    v-model=mavonData
                     @change="editorContent"
-                    v-if="editProblem==1"
                 ></mavon-editor>
             </div>
             <div class="submit-content">
@@ -35,6 +33,23 @@
                     <i class="icon-bar"></i>
                 </div>
                 <span style="font-size: 13px;">Submissions</span>
+            </div>
+            <!-- 根据当前的用户是不是管理选择是否展示 -->
+            <div class="submissions submissions-margin" @click="edit">
+                <div class="toggle">
+                    <i class="icon-bar"></i>
+                    <i class="icon-bar"></i>
+                    <i class="icon-bar"></i>
+                </div>
+                <span style="font-size: 13px;">{{canEdit?"保存":"编辑问题"}}</span>
+            </div>
+            <div class="submissions submissions-margin" @click="edit">
+                <div class="toggle">
+                    <i class="icon-bar"></i>
+                    <i class="icon-bar"></i>
+                    <i class="icon-bar"></i>
+                </div>
+                <span style="font-size: 13px;">上传测试数据</span>
             </div>
             <div class="problem-limit">
                 <div class="information-head">
@@ -90,7 +105,6 @@ export default {
                 "2\n" +
                 "4\n" +
                 "```",
-            editProblem: 1,
             informationIcon:require(`../../assets/images/information.png`),
             editIcon:require(`../../assets/images/edit.png`),
             problemHtmlContent: "", // 后端获取，当编辑器update的时候，时刻更新
@@ -113,17 +127,25 @@ export default {
                 help: true, // 帮助
                 trash: true, // 清空
                 save: true, // 保存（触发events中的save事件）
-                /* 1.4.2 */
-                navigation: true, // 导航目录
-                /* 2.2.1 */
-                subfield: true, // 单双栏模式
                 preview: true, // 预览
-            }
+            },
+            canEdit: false,
         }
     },
     mounted(){
         this.$store.commit('setTabIndex', -1)
         window.console.log(this.$route.params.id, "get problem info")
+    },
+    computed:{
+        canShow() {
+            return this.canEdit
+        },
+        disMode() {
+            if(this.canEdit) {
+                return "edit"
+            }
+            return "preview"
+        }
     },
     methods: {
         editorContent: function (markdown, html) {
@@ -131,6 +153,9 @@ export default {
             this.mavonData = markdown
             window.console.log(this.mavonData)
         },
+        edit: function() {
+            this.canEdit = !this.canEdit
+        }
     },
     components: {
         Code,Comment,
@@ -209,6 +234,7 @@ export default {
     cursor: pointer;
     border-left-width: 2px;
     background-color: white;
+    user-select: none;
 }
 .submissions:hover{
     color: rgb(76,145,235);
@@ -218,6 +244,9 @@ export default {
     background-color: rgb(76,145,235);
 }
 
+.submissions-margin {
+    margin-top: 20px;
+}
 .toggle {
     float: right;
     display: flex;
