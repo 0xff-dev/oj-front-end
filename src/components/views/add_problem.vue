@@ -113,11 +113,11 @@ export default {
             this.iconDirection = !this.iconDirection
         },
         addOrDel(id) {
-            let idIndex = this.testList.indexOf(id)
+            let idIndex = this.selectTagIdList.indexOf(id)
             if(idIndex === -1){
-                this.testList.push(id)
+                this.selectTagIdList.push(id)
             } else {
-                this.testList.splice(idIndex, 1)
+                this.selectTagIdList.splice(idIndex, 1)
             }
         },
         showAddPanel() {
