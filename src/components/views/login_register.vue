@@ -10,9 +10,9 @@
                 <div class="panel-item-container" v-if="whichPanel!=3">
                     <div class="panel-item">
                         <span class="icon-span"><img class="login-register-icon" :src="userIcon"></span>
-                        <input class="input-span" type="text" placeholder="Username">
+                        <input class="input-span" type="text" placeholder="Username" v-model="username">
                     </div>
-                    <span class="tip-span" v-show="whichPanel!=3">*dfdfd</span>
+                    <span class="tip-span" v-show="!verificationUserName">{{usernameTip}}</span>
                 </div>
                 <div class="login-items" v-if="whichPanel==1">
                     <div class="panel-item-container">
@@ -20,7 +20,8 @@
                             <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
                             <input class="input-span" type="password" placeholder="Password">
                         </div>
-                        <span class="tip-span">*dfdfd</span>
+                        <!-- login panel don't need tips -->
+                        <span class="tip-span"></span>
                     </div>
                     <div class="login-footer">
                         <button @click="login">Login</button>
@@ -34,16 +35,16 @@
                     <div class="panel-item-container">
                         <div class="panel-item">
                             <span class="icon-span"><img class="login-register-icon" :src="emailIcon"></span>
-                            <input class="input-span" type="text" placeholder="Email">
+                            <input class="input-span" type="text" placeholder="Email" v-model="email">
                         </div>
-                        <span class="tip-span" v-show="whichPanel!=2">*dfdfd</span>
+                        <span class="tip-span" v-show="!verificationEmail">{{emailTip}}</span>
                     </div>
                     <div class="panel-item-container">
                         <div class="panel-item">
                             <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
-                            <input class="input-span" type="password" placeholder="Password">
+                            <input class="input-span" type="password" placeholder="Password" v-model="password">
                         </div>
-                        <span class="tip-span">*dfdfd</span>
+                        <span class="tip-span" v-show="!verificationPassword">{{passwordTip}}</span>
                     </div>
 
                     <div class="panel-item-container">
@@ -51,7 +52,7 @@
                             <span class="icon-span"><img class="login-register-icon" :src="lockIcon"></span>
                             <input class="input-span" type="password" placeholder="RePassword">
                         </div>
-                        <span class="tip-span">*dfdfd</span>
+                        <span class="tip-span" v-show="!verificationRePassword">{{rePasswordTip}}</span>
                     </div>
                     <div class="register-footer">
                         <button @click="register">Register</button>
@@ -90,6 +91,11 @@ export default {
             email:"",
             password:"",
             rePassword:"",
+            // 正则验证部分
+            usernameTip: "4到16位(字母，数字，下划线，减号),字母开头", 
+            emailTip: "email tip",
+            passwordTip: "6-16位(至少1数字2大写字母2小写字母1特殊字符)",
+            rePasswordTip: "密码不一致",
         }
     },
     computed: {
@@ -97,16 +103,21 @@ export default {
             return this.$store.state.panelStatus
         },
         verificationUserName(){
-            return false
+            // 再发请求验证用户名是否存在?
+            if(this.username === "") return true
+            return /^[a-zA-Z][a-zA-Z0-9_-]{1,16}$/.test(this.username)
         },
         verificationEmail(){
-            return true
+            if(this.email === "") return true
+            return /^([a-zA-Z0-9_.]+@([a-zA-Z0-9_])+\.(com|cn))/.test(this.email)
         },
         verificationPassword(){
-            return false
+            if(this.password === "") return true 
+            return /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z]{2,})(?=.*[a-z]{2,})(?=.*[!@#$%^&*?()]).*$/.test(this.password)
         },
         verificationRePassword(){
-            return true
+            if(this.rePassword === "") return true
+            return this.rePassword === this.password
         }
     },
     methods: {
@@ -122,10 +133,12 @@ export default {
         toRegister: function () {
             this.resetData()
             this.$store.commit('setPanelStatus', 2)
+            this.resetTips()
         },
         toLogin: function () {
             this.resetData()
             this.$store.commit('setPanelStatus', 1)
+            this.resetTips()
         },
         register: function () {
 
@@ -133,10 +146,15 @@ export default {
         forgetPwd: function () {
             this.resetData()
             this.$store.commit('setPanelStatus', 3)
+            this.resetTips()
             alert("forget password")
         },
         closePanel: function () {
             this.$store.commit('setPanelStatus', 0)
+        },
+        resetTips(){
+            this.usernameTip = "", this.emailTip = ""
+            this.passwordTip = "", this.rePasswordTip = ""
         }
     }
 }
