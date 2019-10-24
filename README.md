@@ -19,3 +19,4 @@
 ## 使用vuex统一进行状态管理
 1. head.vue的index问题
 2. login-register页面的显示问题。由全局的一个变量控制，直接在App.vue一处引入即可
+3. 将导航的index做成静态变量使用。`homePage=0,xxxx, onIndex=-1(导航不显示下边的蓝色线条)`
