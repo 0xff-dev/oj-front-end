@@ -28,7 +28,7 @@
                 <span>{{item.author}}</span>
             </div>
         </div>
-        <Pagination :apiUrl="constUrl" :datas.sync="datas"></Pagination>
+        <Pagination :nowIndex.sync=nowIndex :total.sync=total></Pagination>
     </div>
 </template>
 
@@ -36,6 +36,7 @@
 import TableHead from '../tableHead.vue'
 import Pagination from '../pagination.vue'
 
+import Axios from 'axios'
 export default {
     name: 'Problems',
     components: {
@@ -44,7 +45,9 @@ export default {
     data: function() {
         return {
             datas: [],
-            constUrl: "http://localhost:8888/status",
+            nowIndex: 1,
+            total: 0,
+            constUrl: "http://localhost:8888/api/v1/test/status",
             colorMap: {
                 "Accepted": "red",
                 "Wrong Answer": "green",
@@ -55,6 +58,21 @@ export default {
     },
     created() {
         this.$store.commit('setTabIndex', 2)
+        this.getStatus()
+    },
+    watch: {
+        nowIndex(newVal) { 
+            this.nowIndex = newVal
+            this.getStatus() 
+        }
+    },
+    methods: {
+        getStatus() {
+            Axios.get(this.constUrl).then(resp => {
+                this.datas = resp.data.data
+                this.total = resp.data.count
+            })
+        }
     }
 }
 </script>

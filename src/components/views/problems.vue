@@ -24,13 +24,15 @@
                 <span>{{item.tags}}</span>
             </div>
         </div>
-        <Pagination :apiUrl="constUrl" :datas.sync="datas"></Pagination>
+        <Pagination  :nowIndex.sync=nowIndex :total.sync=total></Pagination>
     </div>
 </template>
 
 <script>
 import TableHead from '../tableHead.vue'
 import Pagination from '../pagination.vue'
+
+import Axios from 'axios';
 
 export default {
     name: 'Problems',
@@ -40,13 +42,30 @@ export default {
     data: function() {
         return {
             datas: [],
+            nowIndex: 1,
+            total: 0, 
             rightPng: require(`../../assets/images/ac.png`),
             wrongPng: require(`../../assets/images/wrong.png`),
-            constUrl: "http://localhost:8888/problems"
+            constUrl: "http://localhost:8888/api/v1/test/problems"
         }
     },
     created() {
         this.$store.commit('setTabIndex', 1)
+        this.getProblems()
+    },
+    watch: {
+        nowIndex(newVal) { 
+            this.nowIndex = newVal
+            this.getProblems()
+        }
+    },
+    methods: {
+        getProblems() {
+            Axios.get(this.constUrl).then(resp => {
+                this.datas = resp.data.data
+                this.total = resp.data.count
+            })
+        }
     }
 }
 </script>

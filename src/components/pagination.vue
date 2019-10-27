@@ -1,44 +1,40 @@
 <!-- 分页插件 -->
 <template>
-    <div class="pagination">
+    <div class="pagination" v-if="pageCnt != 0">
         <div v-if="total < 5">
             <span v-for="index in (1,total)" :key="index" 
-                :class="index==nowIndex?'default-span activePage':'default-span'"
+                :class="index==pageIndex?'default-span activePage':'default-span'"
                 @click="selectPage(index)">
                 {{index}}
             </span>
         </div>
         <div v-if="total >= 5">
-            <span class="default-span span-border" v-if="nowIndex!=1" @click="prePage"><img :src="left"></span>
+            <span class="default-span span-border" v-if="pageIndex!=1" @click="prePage"><img :src="left"></span>
             <span v-for="index in pages" 
                 :key="index" 
-                :class="index==nowIndex?'default-span span-border-color activePage':'default-span span-border-color '"
+                :class="index==pageIndex?'default-span span-border-color activePage':'default-span span-border-color '"
                 @click="selectPage(index)">
                     {{index}}
             </span>
-            <span class="default-span span-border" v-if="nowIndex!=total" @click="nextPage"><img :src="right"></span>
+            <span class="default-span span-border" v-if="pageIndex!=total" @click="nextPage"><img :src="right"></span>
         </div>
     </div> 
 </template>
 
 <script>
-import Axios from 'axios';
-
 export default {
     props: {
-        apiUrl: {
-            type: String,
+        nowIndex: {
+            type: Number,
             required: true
         },
-        datas: {
-            type: Array,
+        total: {
+            type: Number,
             required: true
         }
     },
     data: function() {
         return {
-            nowIndex: 1,
-            total: 0,
             left: require(`../assets/images/left.png`),
             right: require(`../assets/images/right.png`),
             pages: [1,2,3,4,5]
@@ -47,29 +43,38 @@ export default {
     created: function() {
         this.selectPage(1)
     },
+    computed: {
+        pageIndex() { return this.nowIndex },
+        pageCnt() { return this.total }
+    },
+    watch: {
+        total(newVal) {
+            this.total = newVal
+            this.calculatePages()
+        }
+    },
     methods: {
         selectPage: function(index) {
-            const that = this;
-            that.nowIndex = index
-            Axios.get(that.apiUrl).then(response => {
-                that.$emit('update:datas', response.data.data)
-                that.total = response.data.count
-                if(that.total >= 5) {
-                    that.pages = Array.from(function* gen(start, end){
-                        while(start<=end) yield start++;
-                    }(that.nowIndex >= that.total-2?that.total-4:that.nowIndex-2>0?that.nowIndex-2:1, 
-                        that.nowIndex <= 3?5:that.nowIndex+2<=that.total?that.nowIndex+2:that.total))
-                }
-                if(that.nowIndex > that.total) {
-                    that.nowIndex = that.total
-                }
-            })
+            this.nowIndex = index
+            this.$emit('update:nowIndex', index)
+            this.calculatePages()
+        },
+        calculatePages() {
+            if(this.total >= 5) {
+                this.pages = Array.from(function* gen(start, end){
+                    while(start <= end) yield start++;
+                }(this.pageIndex >= this.total-2?this.total-4:this.pageIndex-2>0?this.pageIndex-2:1, 
+                    this.pageIndex <= 3?5:this.pageIndex+2<=this.total?this.pageIndex+2:this.total))
+            }
+            if(this.pageIndex > this.total) {
+                this.nowIndex = this.total
+            }
         },
         prePage: function() {
-            this.selectPage(--this.nowIndex)
+            this.selectPage(--this.pageIndex)
         },
         nextPage: function() {
-            this.selectPage(++this.nowIndex)
+            this.selectPage(++this.pageIndex)
         }
     }
 }
