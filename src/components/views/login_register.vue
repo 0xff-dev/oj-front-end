@@ -79,6 +79,9 @@
 </template>
 
 <script>
+import Axios from 'axios'
+import {domain, apiVersion, ojApis} from '../router/apis.js'
+
 export default {
     data: function() {
         return {
@@ -127,8 +130,22 @@ export default {
             this.password = ""
             this.rePassword = ""
         },
-        login: function () {
-            alert("login success");
+        login () {
+            if(this.verificationUserName && this.verificationPassword) {
+                Axios.post(domain+apiVersion+ojApis.login, {"username": this.username, "password": this.password}).then(
+                    resp => {
+                        if(resp.status === 200) {
+                            window.console.log(resp.data)
+                            this.$store.commit('setUserToken', resp.data.token)
+                            this.$store.commit('setUserInfo', resp.data.userinfo)
+                            window.localStorage.setItem('user_token', resp.data.token)
+                            this.closePanel()
+                        }
+                    }
+                ).catch(error => {
+                    alert(error)
+                })
+            }
         },
         toRegister: function () {
             this.resetData()
