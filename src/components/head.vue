@@ -18,14 +18,13 @@
                     </router-link>
                   </li>
                 </ul>
-                <div class="buttons">
+                <div class="buttons" v-if="isLogin">
                     <button @click="login">Login</button>
                     <button @click="register">Register</button>
                 </div>
-                <!--测试用户登录后的显示结果, 名字很长的情况-->
-                <!-- <div class="buttons">
-                    <button class="user-login">stevenshuangcocordsdsdsdgggghghg</button>
-                </div> -->
+                <div class="buttons" v-if="!isLogin">
+                    <button class="user-login" @click="logout">{{username}}</button>
+                </div>
             </div>
         </transition>
     </div>
@@ -68,7 +67,6 @@ export default {
                 path: "/about"
             }],
             show: document.body.clientWidth > 1060,
-            //activeIndex: 0, // 应该需要vuex了，不能再等了
         }
     },
     created: function() {
@@ -83,29 +81,50 @@ export default {
             that.show = document.body.clientWidth >= 1060
         }
     },
+    watch: {
+        '$store.state.token': function(newVal, oldVal) {
+            if(newVal != '') {
+                // 请求验证token的正确性。
+                this.username = 'stevenshunag'
+                return 
+            }
+            this.username = ''
+        }
+    },
     computed: {
         activeIndex() {
             return this.$store.state.tabIndex
+        },
+        isLogin() {
+            window.console.log("xx-xx: ", this.userToken === "")
+            return this.$store.state.token === ""
+        },
+        username() {
+            return "stevenshuang"
         }
     },
     methods: {
-        changeTab: function(index) {
+        changeTab(index) {
             this.$store.commit('setTabIndex', index)
             if(document.body.clientWidth < 1060) {
                 this.show = !this.show
             }
         },
-        login: function() {
+        login() {
             this.$store.commit('setPanelStatus', 1)
             if(document.body.clientWidth < 1060) {
                 this.show = !this.show
             }
         },
-        register: function() {
+        register() {
             this.$store.commit('setPanelStatus', 2)
             if(document.body.clientWidth < 1060) {
                 this.show = !this.show
             }
+        },
+        logout() {
+            this.$store.commit('setUserToken', '')
+            this.$store.commit('setUserInfo', {})
         }
     }
 }
