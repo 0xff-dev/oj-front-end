@@ -1,5 +1,10 @@
 const ojApis = {
-    "problemsList": "nothing",
+    problemsList: "nothing",
+    login: "/login"
 }
+const domain = "http://localhost:8888"
+const apiVersion = "/api/v1"
 
-export default ojApis
+export {
+    ojApis, domain, apiVersion
+}
