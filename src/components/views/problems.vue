@@ -18,9 +18,9 @@
             <div v-for="(item,index) in datas" :key="item.id" :class="index%2==0?'header white-back':'header'" >
                 <span><img :src="item.is_ac?rightPng:wrongPng" class="ac-img"></span>
                 <router-link :to="{name:'problem_detail', params:{id:item.id}}" tag="span" class="router-link-span">{{item.id}}</router-link>
-                <router-link :to="{name:'problem_detail', params:{id:item.id}}" tag="span" class="router-link-span">{{item.title}}</router-link>
+                <router-link :to="{name:'problem_detail', params:{id:item.id}}" tag="span" class="router-link-span">{{item.problem_name}}</router-link>
                 <span>{{item.commit_cnt}}</span>
-                <span>{{item.ac_rate}}</span>
+                <span>{{(item.accept_cnt/item.commit_cnt).toFixed(2)+" %"}}</span>
                 <span>{{item.tags}}</span>
             </div>
         </div>
@@ -46,7 +46,7 @@ export default {
             total: 0, 
             rightPng: require(`../../assets/images/ac.png`),
             wrongPng: require(`../../assets/images/wrong.png`),
-            constUrl: "http://localhost:8888/api/v1/test/problems"
+            constUrl: "http://localhost:8888/api/v1/problems"
         }
     },
     created() {
@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         getProblems() {
-            Axios.get(this.constUrl).then(resp => {
+            Axios.get(this.constUrl, {params:{page:this.nowIndex}}).then(resp => {
                 this.datas = resp.data.data
                 this.total = resp.data.count
             })

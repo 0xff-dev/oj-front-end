@@ -9,7 +9,7 @@
                     :subfield=false
                     :toolbars=toolbars
                     :toolbarsFlag=canShow
-                    v-model=mavonData
+                    v-model=datas.content
                     @change="editorContent"
                 ></mavon-editor>
             </div>
@@ -66,12 +66,7 @@
             <div class="tags-list">
                 <P class="tags-list-title">Tags</P>
                 <div class="tag">
-                    <span>dp</span>
-                    <span>二分查找</span>
-                    <span>深度搜索</span>
-                    <span>树形dp</span>
-                    <span>博弈</span>
-                    <span>线段树</span>
+                    <span v-for="str in datas.tags.split(',')" :key="str">str</span>
                 </div>
             </div>
         </div>
@@ -82,31 +77,14 @@
 
 import Code from '../code.vue'
 import Comment from '../comment.vue'
-
+import Axios from "axios"
 export default {
     data: function () {
         return {
-            mavonData: "# Description\n" +
-                "> calculate a+b\n" +
-                "## Input\n" +
-                "this is a sample problem\n" +
-                "\n" +
-                "## Output\n" +
-                "Output is sample just a+b\n" +
-                "\n" +
-                "## Sampleinput\n" +
-                "```\n" +
-                "1 1\n" +
-                "2 2\n" +
-                "```\n" +
-                "\n" +
-                "## SampleOutput\n" +
-                "```\n" +
-                "2\n" +
-                "4\n" +
-                "```",
+            datas: {},
             informationIcon:require(`../../assets/images/information.png`),
             editIcon:require(`../../assets/images/edit.png`),
+            constUrl: "http://localhost:8888/api/v1/problem",
             problemHtmlContent: "", // 后端获取，当编辑器update的时候，时刻更新
             toolbars: {
                 bold: true, // 粗体
@@ -136,6 +114,9 @@ export default {
         this.$store.commit('setTabIndex', -1)
         window.console.log(this.$route.params.id, "get problem info")
     },
+    created() {
+         this.getProblems(this.$route.params.id)
+    },
     computed:{
         canShow() {
             return this.canEdit
@@ -155,6 +136,11 @@ export default {
         },
         edit: function() {
             this.canEdit = !this.canEdit
+        },
+        getProblems(id) {
+            Axios.get(this.constUrl, {params:{id:id}}).then(resp => {
+                this.datas = resp.data.data
+            })
         }
     },
     components: {
