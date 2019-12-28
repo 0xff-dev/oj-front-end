@@ -74,7 +74,6 @@
 </template>
 
 <script>
-
 import Code from '../code.vue'
 import Comment from '../comment.vue'
 import Axios from "axios"
@@ -147,7 +146,6 @@ export default {
         Code,Comment,
     },
 }
-
 </script>
 
 <style scoped>
@@ -157,7 +155,6 @@ export default {
     justify-content: space-between;
     align-items: center;
 }
-
 /* 左右模块 */
 .problem-info-left {
     display: flex;
@@ -167,7 +164,6 @@ export default {
     width: 84%;
     background-color: rgb(238,238,238);
 }
-
 .problem-info-right{
     display: flex;
     flex-direction: column;
@@ -177,13 +173,11 @@ export default {
     background-color: rgb(238,238,238);
     align-self: flex-start;
 }
-
 /* problem markdown part,The people who has privilege can edit problem content */
 .problem-content {
     width: 100%;
     height: auto;
 }
-
 /* submit code part */
 .submit-content {
     width: 100%;
@@ -209,8 +203,6 @@ export default {
     cursor: pointer;
     user-select: none;
 }
-
-
 /* problem right part submission*/
 .submissions {
     display: flex;
@@ -229,7 +221,6 @@ export default {
 .submissions:hover .icon-bar{
     background-color: rgb(76,145,235);
 }
-
 .submissions-margin {
     margin-top: 20px;
 }
@@ -245,24 +236,20 @@ export default {
     outline: none;
     margin: 0 10px;
 }
-
 .toggle > .icon-bar {
     width: 20px;
     height: 4px;
     background-color: rgb(74,80,95);
 }
-
 .toggle .icon-bar + .icon-bar {
     margin-top: 1px;
 }
-
 /* problem limit part*/
 .problem-limit{
     background-color: white;
     margin-top: 20px;
     user-select: none;
 }
-
 .information-head {
     display: flex;
     justify-content: flex-start;
@@ -271,7 +258,6 @@ export default {
     margin-bottom: 20px;
     color: black;
 }
-
 .information-list{
     display: flex;
     flex-direction: column;
@@ -282,12 +268,10 @@ export default {
     margin: 0 10px 10px 10px;
     border-bottom: rgb(233,234,236) 1px dashed;
 }
-
 .problem-comment{
     background-color: white;
     margin: 40px 0;
 }
-
 .tags-list {
     margin-top: 20px;
     background-color: white;

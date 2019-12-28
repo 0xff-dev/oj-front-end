@@ -1,5 +1,5 @@
 <template>
-   <div class="header padding">
+   <div class="header padding"  @click="watchLoginPanel($event)">
         <div class="nav-header">
             <p class="header-title">Online Judge</p>
             <button class="toggle" @click="show = !show">
@@ -22,8 +22,13 @@
                     <button @click="login">Login</button>
                     <button @click="register">Register</button>
                 </div>
-                <div class="buttons" v-if="!isLogin">
-                    <button class="user-login" @click="logout">{{username}}</button>
+                <div class="buttons">
+                    <button class="user-login" @click="showOptions">sevenshuangtrtrtrt</button>
+                    <div class="login-options" v-if="showUserOptList">
+                        <span>&nbsp;&nbsp;用户信息</span>
+                        <span>&nbsp;&nbsp;添加问题</span>
+                        <span>&nbsp;&nbsp;登出</span>
+                    </div>
                 </div>
             </div>
         </transition>
@@ -67,6 +72,7 @@ export default {
                 path: "/about"
             }],
             show: document.body.clientWidth > 1060,
+            showUserOptList: false,
         }
     },
     created: function() {
@@ -86,7 +92,7 @@ export default {
             if(newVal != '') {
                 // 请求验证token的正确性。
                 this.username = 'stevenshunag'
-                return 
+                return
             }
             this.username = ''
         }
@@ -125,6 +131,14 @@ export default {
         logout() {
             this.$store.commit('setUserToken', '')
             this.$store.commit('setUserInfo', {})
+        },
+        showOptions() {
+            this.showUserOptList = !this.showUserOptList
+        },
+        watchLoginPanel(event) {
+            if(event.toElement.className != "user-login") {
+                this.showUserOptList = false
+            }
         }
     }
 }
@@ -238,6 +252,18 @@ export default {
 .user-login {
     width: auto !important;
 }
+
+ .login-options {
+       display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        width: 100%;
+        border: solid 1px rgb(238, 238, 238);
+        border-radius: 8px;
+        user-select: none;
+    }
+
 /* 屏幕足够不需要进行适配 */
 @media (min-width: 1060px) {
     .toggle {
@@ -256,6 +282,10 @@ export default {
         align-items: center;
         width: 15%;
         margin-left: 40px;
+    }
+    .login-options {
+        margin-top: 130px;
+        margin-left: -120px;
     }
 }
 
@@ -288,12 +318,6 @@ export default {
         width: 100%;
         list-style-type: none;
     }
-    /* .items-part li {
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 14px;
-        text-align: start;
-    } */
     .router-link-span {
         width: 100%;
         height: 100%;
@@ -313,10 +337,26 @@ export default {
         margin-bottom: 20px;
     }
     .user-login {
-        margin-left: -25px;
         width: auto !important;
     }
 }
+
+.login-options span {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: start;
+    font-size: 13px;
+}
+
+.login-options span:hover {
+    background-color: rgb(73, 140, 233);
+    color: white;
+}
+.login-options span:last-child {
+    border-top: solid 1px rgb(233,234, 236);
+}
+
 </style>
 
 <style>

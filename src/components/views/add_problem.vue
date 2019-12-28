@@ -11,16 +11,16 @@
         <div class="problem-information">
             <div class="problem-information-item">
                 <span class="problem-information-Tip">标题</span>
-                <input class="problem-input" type="text" placeholder="输入标题...">
+                <input class="problem-input" type="text" v-model="title" placeholder="输入标题...">
             </div>
             <div class="problem-information-item">
                 <span class="problem-information-Tip">内存限制</span>
-                <input class="problem-input input-limit" type="text" placeholder="内存限制...">
+                <input class="problem-input input-limit" v-model="memoryLimit" type="text" placeholder="内存限制...">
                 <span style="margin-left: 5px; font-size: 12px;">mb</span>
             </div>
             <div class="problem-information-item">
                 <span class="problem-information-Tip">时间限制</span>
-                <input class="problem-input input-limit" type="text" placeholder="时间限制...">
+                <input class="problem-input input-limit" v-model="timeLimit" type="text" placeholder="时间限制...">
                 <span style="margin-left: 5px; font-size: 12px;">ms</span>
             </div>
             <div class="problem-information-tags">
@@ -48,32 +48,61 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
          <mavon-editor
             :toolbars="toolbars"
             ref="md"
             :shortCut=false
+            v-model="problemContent"
             @change="onChange"
+            @imgAdd="$imgAdd"
+            @imgDel="$imgDel"
         ></mavon-editor>
-        <span class="submit-btn" @click="submit">提交</span>
+        <span class="submit-btn" @click="uploadimg">提交</span>
     </div>
 </template>
 
 <script>
+import Axios from 'axios'
+
 export default {
     name: "AddProblem",
     data() {
         return {
-            problemContent: "",
-            problemID: "",
+            // create problem data
+            title: "",
+            timeLimit: "",
+            memoryLimit: "",
+            problemContent: "# Description\n" +
+                "> calculate a+b\n" +
+                "## Input\n" +
+                "this is a sample problem\n" +
+                "\n" +
+                "## Output\n" +
+                "Output is sample just a+b\n" +
+                "\n" +
+                "## Sampleinput\n" +
+                "```\n" +
+                "1 1\n" +
+                "2 2\n" +
+                "```\n" +
+                "\n" +
+                "## SampleOutput\n" +
+                "```\n" +
+                "2\n" +
+                "4\n" +
+                "```",
+            problemId: "",
+
             directionIcon: require(`../../assets/images/up.png`),
             iconDirection: true,
             showPanel: false,
-            tagName: "",
+
+            // tags data
             selectTagIdList: [],
             tagsList:[],
+            images: {},
             toolbars: {
                 bold: true, // 粗体
                 italic: true, // 斜体
@@ -102,9 +131,6 @@ export default {
         }
     },
     methods: {
-        submit:function () {
-            window.console.log(this.problemContent)
-        },
         onChange(markdown, html) {
             this.problemContent = markdown
             window.console.log(html)
@@ -132,6 +158,53 @@ export default {
             this.showAddPanel()
             // 发请求
             alert(this.tagName)
+        },
+        $imgAdd(pos, $file) {
+           this.images[pos] = $file
+        },
+        $imgDel(pos) {
+            delete this.images[pos]
+        },
+        uploadimg($e) {
+            // upload file when use click the button save.
+            var formData = new FormData()
+            for(let img in this.images) {
+                formData.append(img, this.images[img])
+            }
+            window.console.log(formData.get(1))
+            Axios({
+                url: "http://localhost:8888/api/v1/test/upload_img",
+                method: "post",
+                data: formData,
+                header: {'Content-Type':'multipart/form-data'},
+            }).then(res => {
+                this.problemId = res.data.problem_id // 返回的问题id
+                if(res.data.data != "indefined"){
+                    res.data.data.forEach(item => {
+                        window.console.log(item)
+                        this.$refs.md.$img2Url(item[0], item[1])
+                    })
+                }
+                const that = this
+                Axios({
+                    url: "http://localhost:8888/api/v1/test/create_problem",
+                    method: "post",
+                    data: {
+                        id: that.problemID, 
+                        problem_name: that.title,
+                        content: that.problemContent,
+                        exe_memory: that.memoryLimit,
+                        tags: that.tagsList.join(","),
+                    },
+                }).then(resp => {
+
+                }).catch(err => {
+                    // this position should open an window tips for create problem error.
+                    window.console.log("create problem error", res.data.problem_id, err)
+                })
+            }).catch(err => {
+                window.console.log(err)
+            })
         }
     },
     created(){

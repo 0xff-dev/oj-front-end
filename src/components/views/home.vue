@@ -7,6 +7,7 @@
 <script>
 
 import AddProblem from './add_problem.vue'
+//import Profile from './profile.vue'
 
 export default {
     created: function() {
